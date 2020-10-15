@@ -20,6 +20,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <curses.h>
+#include <stdlib.h>
 #include "conio.h" 
 
 static int txtattr,oldattr;
@@ -171,6 +172,11 @@ void clreol (void)
    wrefresh(conio_scr);
 }
 
+#ifdef FAKE_CONIO_CLRSCR
+void clrscr (void){
+   system("clear");
+}
+#else
 void clrscr (void)
 {
    if (initialized==0) initconio();
@@ -178,6 +184,7 @@ void clrscr (void)
    wmove(conio_scr,0,0);
    wrefresh(conio_scr);
 }
+#endif
 
 int cprintf (char *format, ... )
 {
